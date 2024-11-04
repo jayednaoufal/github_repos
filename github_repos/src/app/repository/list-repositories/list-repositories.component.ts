@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RepositoryService } from '../../services/repository.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-repository-list',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './list-repositories.component.html',
   styleUrls: ['./list-repositories.component.css']
 })

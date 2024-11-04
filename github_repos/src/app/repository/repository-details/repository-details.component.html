@@ -1,14 +1,24 @@
-<div *ngIf="repo">
-    <h3>{{ repo.name }}</h3>
-    <p><strong>Description:</strong> {{ repo.description }}</p>
-    <a [href]="repo.html_url" target="_blank">GitHub Link</a>
-    <p><strong>Owner:</strong> {{ repo.owner.login }}</p>
-    <img [src]="repo.owner.avatar_url" alt="Owner Avatar" width="100">
-    <div *ngIf="ownerDetails">
-      <p><strong>Public Repositories:</strong> {{ ownerDetails.public_repos }}</p>
-    </div>
-  </div>
-  <div *ngIf="!repo">
-    <p>Loading repository details...</p>
-  </div>
-  
+<div *ngIf="repo" class="repo-details-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ repo.name }}</mat-card-title>
+      <mat-card-subtitle>
+        <strong>Owner:</strong> {{ repo.owner.login }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Description:</strong> {{ repo.description }}</p>
+      <a mat-button [href]="repo.html_url" target="_blank">View on GitHub</a>
+      <mat-divider></mat-divider>
+      <img [src]="repo.owner.avatar_url" alt="Owner Avatar" width="100" class="avatar">
+      <div *ngIf="ownerDetails">
+        <p><strong>Public Repositories:</strong> {{ ownerDetails.public_repos }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="!repo">
+  <mat-spinner></mat-spinner>
+  <p>Loading repository details...</p>
+</div>

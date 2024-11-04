@@ -1,0 +1,10 @@
+.repo-details-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 16px;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+    margin-top: 10px;
+  }

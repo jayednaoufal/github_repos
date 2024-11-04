@@ -1,0 +1,15 @@
+.container {
+    max-width: 600px;
+    margin: auto;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-list-item {
+    transition: background-color 0.3s;
+  }
+  
+  mat-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
