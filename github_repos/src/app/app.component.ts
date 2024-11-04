@@ -10,7 +10,7 @@ import { RepositoryModule } from './repository/repository.module';
   imports: [
     CommonModule, 
     RouterOutlet, 
-    HttpClientModule, 
+    HttpClientModule,
     RepositoryModule
   ],
   templateUrl: './app.component.html',
