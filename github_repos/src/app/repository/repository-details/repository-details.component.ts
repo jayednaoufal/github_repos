@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RepositoryService } from '../../services/repository.service';
+import { Owner } from '../../models/owner';
+import { Repository } from '../../models/repository';
 
 @Component({
   selector: 'app-repository-details',
@@ -8,8 +10,8 @@ import { RepositoryService } from '../../services/repository.service';
   styleUrls: ['./repository-details.component.css']
 })
 export class RepositoryDetailsComponent implements OnInit {
-  repo: any;
-  ownerDetails: any;
+  repo: Repository | null = null;
+  ownerDetails: Owner | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -18,12 +20,12 @@ export class RepositoryDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const repoName = this.route.snapshot.paramMap.get('id');
-    this.repositoryService.getRepositories().subscribe(data => {
-      this.repo = data.items.find((repository: any) => repository.full_name === repoName);
-
-      if (this.repo) {
-        this.repositoryService.getUserDetails(this.repo.owner.login).subscribe(data => {
-          this.ownerDetails = data;
+    this.repositoryService.getRepositories('angular+language:typescript+stars:>=5000').subscribe((repositories: Repository[]) => {
+      this.repo = repositories.find(repo => repo.full_name === repoName) || null;
+  
+      if (this.repo && this.repo.owner) {
+        this.repositoryService.getOwnerDetails(this.repo.owner.login).subscribe((ownerDetails) => {
+          this.ownerDetails = ownerDetails;
         });
       }
     });

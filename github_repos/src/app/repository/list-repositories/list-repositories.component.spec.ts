@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'; 
 import { RepositoryListComponent } from './list-repositories.component';
 import { RepositoryService } from '../../services/repository.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { Repository } from '../../models/repository';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 describe('RepositoryListComponent', () => {
   let component: RepositoryListComponent;
@@ -19,7 +21,7 @@ describe('RepositoryListComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, FormsModule, MatListModule, MatFormFieldModule],
+      imports: [HttpClientTestingModule, FormsModule, MatListModule, MatFormFieldModule, MatPaginatorModule],
       declarations: [RepositoryListComponent],
       providers: [
         { provide: RepositoryService, useValue: mockRepositoryService },
@@ -36,17 +38,45 @@ describe('RepositoryListComponent', () => {
   });
 
   it('should fetch repositories on initialization', () => {
-    const mockRepos = { items: [{ full_name: 'owner/repo1', name: 'Repo 1' }] };
+    const mockRepos: Repository[] = [
+      { 
+        id: 1, 
+        html_url: 'https://github.com/owner/repo1', 
+        full_name: 'owner/repo1', 
+        name: 'Repo 1',
+        description: 'A test repository',
+        owner: {
+          id: 1,
+          html_url: 'https://github.com/owner',
+          login: 'owner',
+          avatar_url: 'https://avatars.githubusercontent.com/u/1?v=4',
+          public_repos: 42
+        }
+      }
+    ];
     mockRepositoryService.getRepositories.and.returnValue(of(mockRepos));
 
     component.ngOnInit();
 
     expect(component.repositories.length).toBe(1);
-    expect(component.repositories[0].name).toBe('Repo 1');
+    expect(component.repositories[0].full_name).toBe('owner/repo1');
   });
 
   it('should navigate to repository details on showDetails', () => {
-    const repo = { full_name: 'owner/repo1', name: 'Repo 1' };
+    const repo: Repository = {
+      id: 1,
+      html_url: 'https://github.com/owner/repo1',
+      full_name: 'owner/repo1',
+      name: 'Repo 1',
+      description: 'A test repository',
+      owner: {
+        id: 1,
+        html_url: 'https://github.com/owner',
+        login: 'owner',
+        avatar_url: 'https://avatars.githubusercontent.com/u/1?v=4',
+        public_repos: 42
+      }
+    };
 
     component.showDetails(repo);
 
@@ -54,16 +84,15 @@ describe('RepositoryListComponent', () => {
   });
 
   it('should filter repositories based on search term', () => {
-    const mockRepos = { items: [
-      { full_name: 'owner/repo1', name: 'Repo 1' },
-      { full_name: 'owner/repo2', name: 'Repo 2' },
-      { full_name: 'owner/testrepo', name: 'Test Repo' }
-    ]};
+    const mockRepos: Repository[] = [
+      { id: 1, html_url: '', full_name: 'owner/repo1', name: 'Repo 1', description: '', owner: { id: 1, html_url: '', login: '', avatar_url: '', public_repos: 0 } },
+      { id: 2, html_url: '', full_name: 'owner/repo2', name: 'Repo 2', description: '', owner: { id: 2, html_url: '', login: '', avatar_url: '', public_repos: 0 } },
+      { id: 3, html_url: '', full_name: 'owner/testrepo', name: 'Test Repo', description: '', owner: { id: 3, html_url: '', login: '', avatar_url: '', public_repos: 0 } }
+    ];
 
     mockRepositoryService.getRepositories.and.returnValue(of(mockRepos));
     component.ngOnInit();
 
-    // Test filtering by a term
     component.searchTerm = 'Repo';
     component.filterRepositories();
     expect(component.filteredRepositories.length).toBe(3);

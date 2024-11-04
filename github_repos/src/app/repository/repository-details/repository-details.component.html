@@ -3,16 +3,16 @@
     <mat-card-header>
       <mat-card-title>{{ repo.name }}</mat-card-title>
       <mat-card-subtitle>
-        <strong>Owner:</strong> {{ repo.owner.login }}
+        <strong>Propriétaire :</strong> {{ repo.owner.login }}
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p><strong>Description:</strong> {{ repo.description }}</p>
-      <a mat-button [href]="repo.html_url" target="_blank">View on GitHub</a>
+      <p><strong>Description :</strong> {{ repo.description }}</p>
+      <a mat-button [href]="repo.html_url" target="_blank">Voir sur GitHub</a>
       <mat-divider></mat-divider>
-      <img [src]="repo.owner.avatar_url" alt="Owner Avatar" width="100" class="avatar">
+      <img [src]="repo.owner.avatar_url" alt="Avatar du propriétaire" width="100" class="avatar">
       <div *ngIf="ownerDetails">
-        <p><strong>Public Repositories:</strong> {{ ownerDetails.public_repos }}</p>
+        <p><strong>Dépôts publics :</strong> {{ ownerDetails.public_repos }}</p>
       </div>
     </mat-card-content>
   </mat-card>
@@ -20,5 +20,5 @@
 
 <div *ngIf="!repo">
   <mat-spinner></mat-spinner>
-  <p>Loading repository details...</p>
+  <p>Chargement des détails du dépôt...</p>
 </div>

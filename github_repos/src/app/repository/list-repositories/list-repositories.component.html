@@ -1,5 +1,5 @@
 <div class="container" style="padding: 16px;">
-  <h2 mat-dialog-title>Top 20 Angular Repositories</h2>
+  <h2 mat-dialog-title>Top 20 des dépôts Angular</h2>
   
   <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Rechercher un dépôt</mat-label>
@@ -7,9 +7,15 @@
   </mat-form-field>
 
   <mat-list>
-    <mat-list-item *ngFor="let repo of filteredRepositories" (click)="showDetails(repo)" style="cursor:pointer;">
+    <mat-list-item *ngFor="let repo of paginatedRepositories" (click)="showDetails(repo)" style="cursor: pointer;">
       <mat-icon mat-list-icon>folder</mat-icon>
       <h3 mat-line>{{ repo.name }}</h3>
     </mat-list-item>
   </mat-list>
+
+  <mat-paginator [length]="filteredRepositories.length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
 </div>
