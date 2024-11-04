@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 describe('RepositoryListComponent', () => {
   let component: RepositoryListComponent;
@@ -17,8 +19,7 @@ describe('RepositoryListComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatListModule],
-
+      imports: [HttpClientTestingModule, FormsModule, MatListModule, MatFormFieldModule],
       declarations: [RepositoryListComponent],
       providers: [
         { provide: RepositoryService, useValue: mockRepositoryService },
@@ -50,5 +51,29 @@ describe('RepositoryListComponent', () => {
     component.showDetails(repo);
 
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/repo', repo.full_name]);
+  });
+
+  it('should filter repositories based on search term', () => {
+    const mockRepos = { items: [
+      { full_name: 'owner/repo1', name: 'Repo 1' },
+      { full_name: 'owner/repo2', name: 'Repo 2' },
+      { full_name: 'owner/testrepo', name: 'Test Repo' }
+    ]};
+
+    mockRepositoryService.getRepositories.and.returnValue(of(mockRepos));
+    component.ngOnInit();
+
+    // Test filtering by a term
+    component.searchTerm = 'Repo';
+    component.filterRepositories();
+    expect(component.filteredRepositories.length).toBe(3);
+
+    component.searchTerm = 'test';
+    component.filterRepositories();
+    expect(component.filteredRepositories.length).toBe(1);
+
+    component.searchTerm = 'nonexistent';
+    component.filterRepositories();
+    expect(component.filteredRepositories.length).toBe(0);
   });
 });
