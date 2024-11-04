@@ -1,0 +1,14 @@
+<div *ngIf="repo">
+    <h3>{{ repo.name }}</h3>
+    <p><strong>Description:</strong> {{ repo.description }}</p>
+    <a [href]="repo.html_url" target="_blank">GitHub Link</a>
+    <p><strong>Owner:</strong> {{ repo.owner.login }}</p>
+    <img [src]="repo.owner.avatar_url" alt="Owner Avatar" width="100">
+    <div *ngIf="ownerDetails">
+      <p><strong>Public Repositories:</strong> {{ ownerDetails.public_repos }}</p>
+    </div>
+  </div>
+  <div *ngIf="!repo">
+    <p>Loading repository details...</p>
+  </div>
+  
