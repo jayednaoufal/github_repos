@@ -9,7 +9,7 @@ import { Owner } from '../models/owner';
 })
 export class RepositoryService {
   private baseUrl = 'https://api.github.com/search/repositories';
-  private accessToken = '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';
+  private accessToken = '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';
 
   constructor(private http: HttpClient) {}
 
